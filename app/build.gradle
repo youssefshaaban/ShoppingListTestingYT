@@ -6,17 +6,23 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'dagger.hilt.android.plugin'
 android {
     compileSdkVersion 32
-
+    def localProperties=new Properties()
+    localProperties.load(new FileInputStream("local.properties"))
     defaultConfig {
         applicationId "com.androiddevs.shoppinglisttestingyt"
         minSdkVersion 21
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
-
+        buildConfigField("String", "api_key", localProperties['api_key'])
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
+    packagingOptions {
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
     buildTypes {
         release {
             minifyEnabled false
