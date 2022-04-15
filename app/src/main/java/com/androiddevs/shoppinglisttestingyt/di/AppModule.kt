@@ -7,6 +7,8 @@ import com.androiddevs.shoppinglisttestingyt.data.local.ShoppingItemDatabase
 import com.androiddevs.shoppinglisttestingyt.data.remote.PixBayApi
 import com.androiddevs.shoppinglisttestingyt.other.BASE_URL
 import com.androiddevs.shoppinglisttestingyt.other.DATABASE_NAME
+import com.androiddevs.shoppinglisttestingyt.repository.DefaultShoppingRepositery
+import com.androiddevs.shoppinglisttestingyt.repository.IShoppingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,6 +27,13 @@ class AppModule {
     fun provideShoppingDatabase(@ApplicationContext context: Context): ShoppingItemDatabase =
         Room.databaseBuilder(context, ShoppingItemDatabase::class.java, DATABASE_NAME).build()
 
+    @Provides
+    @Singleton
+    fun provideDefaultShoppingRepositary(
+        shoppingDoa: ShoppingDoa,
+        api: PixBayApi
+    ): IShoppingRepository =
+        DefaultShoppingRepositery(shoppingDoa, pixBayApi = api)
 
     @Provides
     @Singleton
