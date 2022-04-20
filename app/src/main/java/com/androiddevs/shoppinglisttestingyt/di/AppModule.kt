@@ -2,6 +2,7 @@ package com.androiddevs.shoppinglisttestingyt.di
 
 import android.content.Context
 import androidx.room.Room
+import com.androiddevs.shoppinglisttestingyt.R
 import com.androiddevs.shoppinglisttestingyt.data.local.ShoppingDoa
 import com.androiddevs.shoppinglisttestingyt.data.local.ShoppingItemDatabase
 import com.androiddevs.shoppinglisttestingyt.data.remote.PixBayApi
@@ -9,6 +10,8 @@ import com.androiddevs.shoppinglisttestingyt.other.BASE_URL
 import com.androiddevs.shoppinglisttestingyt.other.DATABASE_NAME
 import com.androiddevs.shoppinglisttestingyt.repository.DefaultShoppingRepositery
 import com.androiddevs.shoppinglisttestingyt.repository.IShoppingRepository
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,6 +37,16 @@ class AppModule {
         api: PixBayApi
     ): IShoppingRepository =
         DefaultShoppingRepositery(shoppingDoa, pixBayApi = api)
+
+    @Singleton
+    @Provides
+    fun provideGlideInstance(
+        @ApplicationContext context: Context
+    ) = Glide.with(context).setDefaultRequestOptions(
+        RequestOptions()
+            .placeholder(R.drawable.ic_image)
+            .error(R.drawable.ic_image)
+    )
 
     @Provides
     @Singleton

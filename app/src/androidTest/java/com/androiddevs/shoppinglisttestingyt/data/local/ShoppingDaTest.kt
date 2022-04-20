@@ -1,12 +1,8 @@
 package com.androiddevs.shoppinglisttestingyt.data.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.androiddevs.shoppinglisttestingyt.getOrAwaitValue
+import com.androiddevs.shoppinglisttestingyt.getOrAwaitValueAndroidTest
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -16,7 +12,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -53,7 +48,7 @@ class ShoppingDaTest {
         runBlockingTest {
             val shoppingItem = ShoppingItem("mmm", 3, 34.5f, "url", id = 1)
             shoppingDoa.insertShoppingItem(shoppingItem)
-            val allShoppingItem = shoppingDoa.observeAllShoppingItems().getOrAwaitValue()
+            val allShoppingItem = shoppingDoa.observeAllShoppingItems().getOrAwaitValueAndroidTest()
             assertThat(allShoppingItem).contains(shoppingItem)
         }
     }
@@ -64,7 +59,7 @@ class ShoppingDaTest {
             val shoppingItem = ShoppingItem("mmm", 3, 34.5f, "url", id = 1)
             shoppingDoa.insertShoppingItem(shoppingItem)
             shoppingDoa.deleteShoppingItem(shoppingItem)
-            val allShoppingItem = shoppingDoa.observeAllShoppingItems().getOrAwaitValue()
+            val allShoppingItem = shoppingDoa.observeAllShoppingItems().getOrAwaitValueAndroidTest()
             assertThat(allShoppingItem).doesNotContain(shoppingItem)
         }
     }
@@ -79,7 +74,7 @@ class ShoppingDaTest {
             shoppingDoa.insertShoppingItem(shoppingItem1)
             shoppingDoa.insertShoppingItem(shoppingItem2)
 
-            val totalPrice = shoppingDoa.observeTotalPrice().getOrAwaitValue()
+            val totalPrice = shoppingDoa.observeTotalPrice().getOrAwaitValueAndroidTest()
             assertThat(totalPrice).isEqualTo(3 * 34.5f + 2 * 34.5f + 34.5f)
         }
     }

@@ -28,7 +28,7 @@ import java.util.concurrent.TimeoutException
  * `InstantTaskExecutorRule` or a similar mechanism to execute tasks synchronously.
  */
 @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-fun <T> LiveData<T>.getOrAwaitValue(
+fun <T> LiveData<T>.getOrAwaitValueAndroidTest(
     time: Long = 2,
     timeUnit: TimeUnit = TimeUnit.SECONDS,
     afterObserve: () -> Unit = {}
@@ -39,7 +39,7 @@ fun <T> LiveData<T>.getOrAwaitValue(
         override fun onChanged(o: T?) {
             data = o
             latch.countDown()
-            this@getOrAwaitValue.removeObserver(this)
+            this@getOrAwaitValueAndroidTest.removeObserver(this)
         }
     }
     this.observeForever(observer)

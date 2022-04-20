@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ShoppingViewModel @Inject constructor(private val iShoppingRepository: IShoppingRepository) :
+open class ShoppingViewModel @Inject constructor(private val iShoppingRepository: IShoppingRepository) :
     ViewModel() {
     val shoppingItems = iShoppingRepository.observeAllShoppingItems()
     val totalPrice = iShoppingRepository.observeTotalPrice()
