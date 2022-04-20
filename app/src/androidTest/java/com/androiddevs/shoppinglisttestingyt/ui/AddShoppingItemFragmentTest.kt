@@ -6,9 +6,11 @@ import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.MediumTest
 import com.androiddevs.shoppinglisttestingyt.R
+import com.androiddevs.shoppinglisttestingyt.data.local.ShoppingItem
 import com.androiddevs.shoppinglisttestingyt.getOrAwaitValueAndroidTest
 import com.androiddevs.shoppinglisttestingyt.launchFragmentInHiltContainer
 import com.androiddevs.shoppinglisttestingyt.repository.FakeShoppingRepositoryAndroidTest
@@ -29,8 +31,10 @@ class AddShoppingItemFragmentTest {
 
     @get:Rule
     var instantTaskExecutorRule=InstantTaskExecutorRule()
+
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
+
     @Before
     fun setup() {
         hiltRule.inject()
@@ -68,5 +72,22 @@ class AddShoppingItemFragmentTest {
         }
         onView(withId(R.id.ivShoppingImage)).perform(click())
         verify(navController).navigate(AddShoppingItemFragmentDirections.actionAddShoppingItemFragmentToImagePickFragment())
+    }
+
+    @Test
+    fun clickInsertIntoDb_shoppingItemInsertToDB(){
+        val navController = mock(NavController::class.java)
+        val testViewModel=ShoppingViewModel(FakeShoppingRepositoryAndroidTest())
+        launchFragmentInHiltContainer<AddShoppingItemFragment> {
+            Navigation.setViewNavController(requireView(), navController)
+            viewModel=testViewModel
+        }
+
+        onView(withId(R.id.etShoppingItemName)).perform(replaceText("shopping item"))
+        onView(withId(R.id.etShoppingItemAmount)).perform(replaceText("5"))
+        onView(withId(R.id.etShoppingItemPrice)).perform(replaceText("3.4"))
+        onView(withId(R.id.btnAddShoppingItem)).perform(click())
+
+        assertThat(testViewModel.shoppingItems.getOrAwaitValueAndroidTest()).contains(ShoppingItem("shopping item",5,3.4f,""))
     }
 }
